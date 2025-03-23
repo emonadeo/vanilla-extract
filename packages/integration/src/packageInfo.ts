@@ -8,8 +8,8 @@ export interface PackageInfo {
   dirname: string;
 }
 
-function getClosestPackageInfo(directory: string) {
-  const packageJsonPath = findUp.sync('package.json', {
+function getClosestPackageInfo(directory: string): PackageInfo | undefined {
+  const packageJsonPath = findUp.sync(['package.json', 'deno.json'], {
     cwd: directory,
   });
 
@@ -44,7 +44,7 @@ export function getPackageInfo(cwd?: string | null): PackageInfo {
 
   if (!packageInfo || !packageInfo.name) {
     throw new Error(
-      `Couldn't find parent package.json with a name field from '${resolvedCwd}'`,
+      `Couldn't find parent package.json or deno.json with a name field from '${resolvedCwd}'`,
     );
   }
 
